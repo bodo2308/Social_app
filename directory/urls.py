@@ -4,6 +4,5 @@ from . import views
 app_name = 'directory'
 
 urlpatterns = [
-    # Placeholder URLs - to be implemented
-    path('', views.index, name='index'),
+    path('', views.directory, name='directory'),
 ]

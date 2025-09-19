@@ -5,7 +5,7 @@
 
 ```bash
 # Copy the repository URL from GitHub
-git clone https://github.com/YOUR_USERNAME/social_app.git
+git clone https://github.com/bodo2308/social_app.git
 
 # Navigate to the project directory
 cd social_app

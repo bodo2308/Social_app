@@ -1,23 +1,185 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Welcome to SocialApp{% endblock %}
+{% block title %}Dashboard - Company Connect{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-lg-8 text-center">
-            <!-- Hero Section -->
-            <div class="py-5">
-                <h1 class="display-4 fw-bold text-primary mb-4">Welcome to SocialApp</h1>
-                
-             
-                    <div class="d-flex gap-3 justify-content-center">
-                        <a href="" class="btn btn-primary btn-lg">Get Started</a>
-                        <a href"" class="btn btn-outline-primary btn-lg">Login</a>
+<div class="container-fluid">
+    <!-- Welcome Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold text-dark mb-2">Welcome back, John!</h1>
+            <p class="text-muted fs-5">Here's what's happening in your company today.</p>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-5">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h6 class="card-title text-muted mb-1">Friends</h6>
+                        <h2 class="fw-bold text-dark mb-0">3</h2>
                     </div>
+                    <div class="ms-3">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                            <i class="fas fa-users text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h6 class="card-title text-muted mb-1">Messages</h6>
+                        <h2 class="fw-bold text-dark mb-0">2</h2>
+                    </div>
+                    <div class="ms-3">
+                        <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                            <i class="fas fa-comment text-success"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h6 class="card-title text-muted mb-1">Friend Requests</h6>
+                        <h2 class="fw-bold text-dark mb-0">1</h2>
+                    </div>
+                    <div class="ms-3">
+                        <div class="bg-purple bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                            <i class="fas fa-user-plus text-purple"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h6 class="card-title text-muted mb-1">Team Members</h6>
+                        <h2 class="fw-bold text-dark mb-0">8</h2>
+                    </div>
+                    <div class="ms-3">
+                        <div class="bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                            <i class="fas fa-chart-line text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Row -->
+    <div class="row">
+        <!-- Recent Activity -->
+        <div class="col-lg-8 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-0 pb-0">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-clock text-muted me-2"></i>
+                        <h5 class="card-title mb-0 fw-bold">Recent Activity</h5>
+                    </div>
+                    <p class="text-muted mb-3">Stay updated with the latest happenings.</p>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="activity-item d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                            <span class="text-white fw-bold">SW</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <p class="mb-1 fw-medium">Sarah Wilson sent you a friend request</p>
+                            <small class="text-muted">2 hours ago</small>
+                        </div>
+                        <button class="btn btn-sm btn-outline-secondary">New Request</button>
+                    </div>
+                    <div class="activity-item d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                            <span class="text-white fw-bold">MC</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <p class="mb-1 fw-medium">Mike Chen sent you a message</p>
+                            <small class="text-muted">4 hours ago</small>
+                        </div>
+                        <button class="btn btn-sm btn-dark">
+                            <i class="fas fa-comment me-1"></i>Message
+                        </button>
+                    </div>
+                    <div class="activity-item d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                            <span class="text-white fw-bold">ER</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <p class="mb-1 fw-medium">Emily Rodriguez joined the company</p>
+                            <small class="text-muted">1 day ago</small>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="#" class="text-decoration-none">View All Activity</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-lg-4">
+            <!-- Today's Schedule -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-0 pb-0">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-calendar text-muted me-2"></i>
+                        <h5 class="card-title mb-0 fw-bold">Today's Schedule</h5>
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="schedule-item d-flex align-items-center mb-3">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px;">
+                            <i class="fas fa-calendar text-primary"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <p class="mb-0 fw-medium">Team Standup</p>
+                            <small class="text-muted">9:00 AM</small>
+                        </div>
+                    </div>
+                    <div class="schedule-item d-flex align-items-center mb-3">
+                        <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px;">
+                            <i class="fas fa-coffee text-success"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <p class="mb-0 fw-medium">Coffee Chat with Design</p>
+                            <small class="text-muted">2:00 PM</small>
+                        </div>
+                    </div>
+                    <div class="schedule-item d-flex align-items-center mb-3">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px;">
+                            <i class="fas fa-calendar text-primary"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <p class="mb-0 fw-medium">All Hands Meeting</p>
+                            <small class="text-muted">4:00 PM</small>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <!-- Quick Actions -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 pb-0">
+                    <h5 class="card-title mb-0 fw-bold">Quick Actions</h5>
+                </div>
+                <div class="card-body pt-0">
+                    <a href="{% url 'directory:directory' %}" class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-start">
+                        <i class="fas fa-user-plus me-2"></i>Find Colleagues
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

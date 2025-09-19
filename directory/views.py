@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 
-def index(request):
-    return HttpResponse("Member Directory - Coming soon!")
+def directory(request):
+    """Directory page view - member directory"""
+    return render(request, 'directory/directory.html')

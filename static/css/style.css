@@ -1,0 +1,149 @@
+/* Company Connect Dashboard Styles */
+
+:root {
+    --primary-color: #6c5ce7;
+    --secondary-color: #a29bfe;
+    --success-color: #00b894;
+    --warning-color: #fdcb6e;
+    --danger-color: #e17055;
+    --purple-color: #a29bfe;
+    --light-gray: #f8f9fa;
+    --border-color: #e9ecef;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Top Bar */
+.top-bar {
+    font-size: 0.875rem;
+    min-height: 40px;
+}
+
+/* Navigation */
+.navbar-brand {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.navbar-nav .nav-link {
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    transform: translateY(-1px);
+}
+
+/* Cards */
+.card {
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+}
+
+/* Summary Cards */
+.summary-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+/* Activity Items */
+.activity-item {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+/* Schedule Items */
+.schedule-item {
+    padding: 0.5rem 0;
+}
+
+/* Custom Colors */
+.text-purple {
+    color: var(--purple-color) !important;
+}
+
+.bg-purple {
+    background-color: var(--purple-color) !important;
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Icon Styles */
+.fas, .far {
+    font-size: 0.9rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .navbar-nav {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .navbar-nav .nav-link {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .display-5 {
+        font-size: 2rem;
+    }
+}
+
+/* Custom spacing */
+.mb-5 {
+    margin-bottom: 3rem !important;
+}
+
+/* Shadow utilities */
+.shadow-sm {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+/* Rounded corners */
+.rounded-pill {
+    border-radius: 50rem !important;
+}
+
+/* Text utilities */
+.fw-medium {
+    font-weight: 500 !important;
+}
+
+/* Background opacity utilities */
+.bg-primary.bg-opacity-10 {
+    background-color: rgba(108, 92, 231, 0.1) !important;
+}
+
+.bg-success.bg-opacity-10 {
+    background-color: rgba(0, 184, 148, 0.1) !important;
+}
+
+.bg-warning.bg-opacity-10 {
+    background-color: rgba(253, 203, 110, 0.1) !important;
+}
+
+.bg-purple.bg-opacity-10 {
+    background-color: rgba(162, 155, 254, 0.1) !important;
+}

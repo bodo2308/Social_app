@@ -4,5 +4,5 @@ from . import views
 app_name = 'accounts'
 
 urlpatterns = [
-    # Placeholder URLs - to be implemented
+    path('friends/', views.friends, name='friends'),
 ]

@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Newsfeed - Company Connect{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Main Newsfeed -->
+        <div class="col-lg-8">
+            <!-- Create Post Card -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                            <i class="fas fa-user text-white"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0 fw-bold">What's on your mind?</h6>
+                            <small class="text-muted">Share an update with your colleagues</small>
+                        </div>
+                    </div>
+                    <div class="border rounded-3 p-3 bg-light">
+                        <textarea class="form-control border-0 bg-transparent" rows="3" placeholder="Share something with your team..."></textarea>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div class="d-flex gap-3">
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-image me-1"></i>Photo
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-video me-1"></i>Video
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-calendar me-1"></i>Event
+                            </button>
+                        </div>
+                        <button class="btn btn-primary">Post</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sample Posts -->
+            <!-- Post 1 -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-success d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                            <span class="text-white fw-bold">SW</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0 fw-bold">Sarah Wilson</h6>
+                            <small class="text-muted">Product Manager • 2 hours ago</small>
+                        </div>
+                    </div>
+                    <p class="mb-3">Excited to share that we've just launched our new product feature! The team has been working incredibly hard on this.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex gap-4">
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-thumbs-up me-1"></i>Like (12)
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-comment me-1"></i>Comment (5)
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-share me-1"></i>Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post 2 -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                            <span class="text-white fw-bold">MC</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0 fw-bold">Mike Chen</h6>
+                            <small class="text-muted">UX Designer • 4 hours ago</small>
+                        </div>
+                    </div>
+                    <p class="mb-3">Just finished a great design workshop with the team! We explored some exciting new concepts for our upcoming mobile app.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex gap-4">
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-thumbs-up me-1"></i>Like (8)
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-comment me-1"></i>Comment (3)
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-share me-1"></i>Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post 3 -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-info d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                            <span class="text-white fw-bold">ER</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0 fw-bold">Emily Rodriguez</h6>
+                            <small class="text-muted">Marketing Manager • 6 hours ago</small>
+                        </div>
+                    </div>
+                    <p class="mb-3">Our latest marketing campaign is live! Check out the amazing results we're seeing. Thanks to everyone who contributed!</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex gap-4">
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-thumbs-up me-1"></i>Like (15)
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-comment me-1"></i>Comment (7)
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-share me-1"></i>Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post 4 -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                            <span class="text-white fw-bold">DK</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0 fw-bold">David Kim</h6>
+                            <small class="text-muted">Data Scientist • 1 day ago</small>
+                        </div>
+                    </div>
+                    <p class="mb-3">Fascinating insights from our latest data analysis! The patterns we're seeing in user behavior are really interesting.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex gap-4">
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-thumbs-up me-1"></i>Like (9)
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-comment me-1"></i>Comment (4)
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-share me-1"></i>Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Trending Topics -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-0">
+                    <h6 class="fw-bold mb-0">Trending Topics</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-primary">#ProductLaunch</span>
+                        <small class="text-muted">12 posts</small>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-primary">#DesignWorkshop</span>
+                        <small class="text-muted">8 posts</small>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-primary">#MarketingCampaign</span>
+                        <small class="text-muted">15 posts</small>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-primary">#DataInsights</span>
+                        <small class="text-muted">6 posts</small>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-primary">#TeamBuilding</span>
+                        <small class="text-muted">9 posts</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-0">
+                    <h6 class="fw-bold mb-0">Recent Activity</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px;">
+                            <i class="fas fa-user-plus text-primary"></i>
+                        </div>
+                        <div>
+                            <small class="fw-medium">New colleague joined</small>
+                            <br><small class="text-muted">2 hours ago</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-success bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px;">
+                            <i class="fas fa-trophy text-success"></i>
+                        </div>
+                        <div>
+                            <small class="fw-medium">Team milestone achieved</small>
+                            <br><small class="text-muted">4 hours ago</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-warning bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px;">
+                            <i class="fas fa-calendar text-warning"></i>
+                        </div>
+                        <div>
+                            <small class="fw-medium">Upcoming team meeting</small>
+                            <br><small class="text-muted">Tomorrow 2:00 PM</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <h6 class="fw-bold mb-0">Quick Actions</h6>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-outline-primary w-100 mb-2">
+                        <i class="fas fa-plus me-2"></i>Create Post
+                    </button>
+                    <button class="btn btn-outline-secondary w-100 mb-2">
+                        <i class="fas fa-calendar me-2"></i>Schedule Event
+                    </button>
+                    <button class="btn btn-outline-secondary w-100">
+                        <i class="fas fa-users me-2"></i>Start Discussion
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

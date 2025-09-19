@@ -1,3 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
+def friends(request):
+    """Friends page view - manage connections"""
+    return render(request, 'accounts/friends.html')
