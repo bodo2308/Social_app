@@ -147,3 +147,51 @@ body {
 .bg-purple.bg-opacity-10 {
     background-color: rgba(162, 155, 254, 0.1) !important;
 }
+
+/* Authentication Pages */
+.auth-card {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.auth-card .card-body {
+    padding: 3rem;
+}
+
+.auth-card .form-control {
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    padding: 0.75rem 1rem;
+}
+
+.auth-card .form-control:focus {
+    border-color: #6c5ce7;
+    box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+}
+
+.auth-card .btn {
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+}
+
+.auth-card .alert {
+    border-radius: 8px;
+    border: none;
+}
+
+/* User dropdown */
+.dropdown-menu {
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
