@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Friends - Company Connect{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="fw-bold text-dark mb-1">My Friends</h2>
+                    <p class="text-muted mb-0">Your professional network and connections</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="{% url 'directory:directory' %}" class="btn btn-primary">
+                        <i class="fas fa-search me-1"></i>Find More People
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Friend Requests -->
+    {% if pending_requests %}
+    <div class="row mb-4" id="pending-requests-section">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fas fa-user-plus me-2"></i>Pending Friend Requests
+                        <span class="badge bg-dark ms-2" id="request-badge">{{ pending_requests|length }}</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% for request in pending_requests %}
+                    <div class="d-flex align-items-center mb-3 p-3 border rounded request-item">
+                        <div class="flex-shrink-0 me-3">
+                            {% if request.from_user.profile and request.from_user.profile.profile_picture %}
+                                <img src="{{ request.from_user.profile.profile_picture.url }}" alt="Profile" 
+                                     class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                            {% else %}
+                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center" 
+                                     style="width: 50px; height: 50px;">
+                                    <span class="text-white fw-bold">
+                                        {% if request.from_user.first_name and request.from_user.last_name %}
+                                            {{ request.from_user.first_name|first }}{{ request.from_user.last_name|first }}
+                                        {% else %}
+                                            {{ request.from_user.username|slice:":2"|upper }}
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="fw-bold mb-1">{{ request.from_user.get_full_name|default:request.from_user.username }}</h6>
+                            <p class="text-muted small mb-1">{{ request.created_at|timesince }} ago</p>
+                            {% if request.message %}
+                                <p class="text-muted small mb-2">{{ request.message }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-success btn-sm respond-request-btn" 
+                                        data-request-id="{{ request.id }}" 
+                                        data-action="accept">
+                                    <i class="fas fa-check me-1"></i>Accept
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm respond-request-btn" 
+                                        data-request-id="{{ request.id }}" 
+                                        data-action="decline">
+                                    <i class="fas fa-times me-1"></i>Decline
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Friends Grid -->
+    <div class="row">
+        {% for friend in friends %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100 friend-card">
+                <div class="card-body text-center">
+                    <!-- Profile Picture -->
+                    <div class="mb-3">
+                        {% if friend.profile_picture_url %}
+                            <img src="{{ friend.profile_picture_url }}" alt="Profile" 
+                                 class="rounded-circle friend-avatar">
+                        {% else %}
+                            <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center friend-avatar mx-auto">
+                                <span class="text-white fw-bold fs-4">
+                                    {% if friend.user.first_name and friend.user.last_name %}
+                                        {{ friend.user.first_name|first }}{{ friend.user.last_name|first }}
+                                    {% else %}
+                                        {{ friend.user.username|slice:":2"|upper }}
+                                    {% endif %}
+                                </span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Friend Info -->
+                    <h5 class="fw-bold text-dark mb-1">{{ friend.full_name }}</h5>
+                    {% if friend.position %}
+                        <p class="text-muted mb-1">{{ friend.position }}</p>
+                    {% endif %}
+                    {% if friend.department %}
+                        <p class="text-muted small mb-2">{{ friend.department }}</p>
+                    {% endif %}
+                    {% if friend.office_location %}
+                        <p class="text-muted small mb-3">
+                            <i class="fas fa-map-marker-alt me-1"></i>{{ friend.office_location }}
+                        </p>
+                    {% endif %}
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex justify-content-center gap-2">
+                        <a href="{% url 'directory:member_detail' friend.user.id %}" 
+                           class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-eye me-1"></i>View Profile
+                        </a>
+                        <button class="btn btn-outline-danger btn-sm remove-friend-btn" 
+                                data-user-id="{{ friend.user.id }}" 
+                                data-friend-name="{{ friend.full_name }}">
+                            <i class="fas fa-user-times me-1"></i>Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No friends yet</h5>
+                    <p class="text-muted">Start building your professional network by adding friends from the directory.</p>
+                    <a href="{% url 'directory:directory' %}" class="btn btn-primary">
+                        <i class="fas fa-search me-1"></i>Find People
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.friend-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.friend-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
+}
+
+.friend-avatar {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+.remove-friend-btn {
+    transition: all 0.2s ease;
+}
+
+.remove-friend-btn:hover {
+    transform: translateY(-1px);
+}
+
+.request-item {
+    transition: all 0.2s ease;
+}
+
+.request-item:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-1px);
+}
+
+.respond-request-btn {
+    transition: all 0.2s ease;
+}
+
+.respond-request-btn:hover {
+    transform: scale(1.05);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Remove friend functionality
+    const removeFriendBtns = document.querySelectorAll('.remove-friend-btn');
+    removeFriendBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const userId = this.dataset.userId;
+            const friendName = this.dataset.friendName;
+            
+            if (confirm(`Remove ${friendName} from your friends?`)) {
+                removeFriend(userId, this);
+            }
+        });
+    });
+
+    // Respond to friend requests
+    const respondBtns = document.querySelectorAll('.respond-request-btn');
+    respondBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const requestId = this.dataset.requestId;
+            const action = this.dataset.action;
+            respondToFriendRequest(requestId, action, this);
+        });
+    });
+
+    function removeFriend(userId, buttonElement) {
+        fetch(`/directory/remove-friend/${userId}/`, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showAlert(data.message, 'success');
+                // Remove the card from the DOM
+                buttonElement.closest('.col-lg-4').remove();
+            } else {
+                showAlert(data.message, 'danger');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showAlert('An error occurred. Please try again.', 'danger');
+        });
+    }
+
+    function respondToFriendRequest(requestId, action, buttonElement) {
+        fetch(`/directory/respond-friend-request/${requestId}/${action}/`, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showAlert(data.message, 'success');
+                
+                // Remove the request item from the DOM
+                const requestItem = buttonElement.closest('.request-item');
+                requestItem.remove();
+                
+                // Update the badge count
+                updateRequestBadge();
+                
+                // Check if there are no more requests and hide the section
+                checkAndHideRequestsSection();
+                
+                // If accepted, refresh the page to show the new friend
+                if (action === 'accept') {
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                }
+            } else {
+                showAlert(data.message, 'danger');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showAlert('An error occurred. Please try again.', 'danger');
+        });
+    }
+
+    function updateRequestBadge() {
+        const remainingRequests = document.querySelectorAll('.request-item');
+        const badge = document.getElementById('request-badge');
+        if (badge) {
+            badge.textContent = remainingRequests.length;
+        }
+    }
+
+    function checkAndHideRequestsSection() {
+        const remainingRequests = document.querySelectorAll('.request-item');
+        if (remainingRequests.length === 0) {
+            const requestsSection = document.getElementById('pending-requests-section');
+            if (requestsSection) {
+                requestsSection.style.display = 'none';
+            }
+        }
+    }
+
+    function showAlert(message, type) {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+        alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alertDiv);
+        
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.parentNode.removeChild(alertDiv);
+            }
+        }, 5000);
+    }
+});
+</script>
+{% endblock %}

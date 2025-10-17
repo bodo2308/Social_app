@@ -1,8 +1,50 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Log In - Company Connect{% endblock %}
+{% block title %}Login - Company Connect{% endblock %}
 
 {% block content %}
-Log in page !
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm auth-card">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-building fa-3x text-primary mb-3"></i>
+                        <h2 class="fw-bold text-dark">Welcome Back</h2>
+                        <p class="text-muted">Sign in to your Company Connect account</p>
+                    </div>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 mb-3">Sign In</button>
+                    </form>
+
+                    <div class="text-center">
+                        <p class="text-muted">Don't have an account? 
+                            <a href="{% url 'main:register' %}" class="text-primary text-decoration-none">Sign up here</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

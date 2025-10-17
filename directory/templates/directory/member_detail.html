@@ -1,0 +1,292 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ member.full_name }} - Company Connect{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <!-- Member Profile Card -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-3 text-center">
+                            {% if member.profile_picture_url %}
+                                <img src="{{ member.profile_picture_url }}" alt="Profile" 
+                                     class="rounded-circle member-detail-avatar">
+                            {% else %}
+                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center member-detail-avatar mx-auto">
+                                    <span class="text-white fw-bold fs-2">
+                                        {% if member.user.first_name and member.user.last_name %}
+                                            {{ member.user.first_name|first }}{{ member.user.last_name|first }}
+                                        {% else %}
+                                            {{ member.user.username|slice:":2"|upper }}
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-9">
+                            <h2 class="fw-bold text-dark mb-1">{{ member.full_name }}</h2>
+                            <p class="text-muted mb-2">@{{ member.user.username }}</p>
+                            {% if member.position %}
+                                <p class="text-muted mb-2 fs-5">{{ member.position }}</p>
+                            {% endif %}
+                            {% if member.department %}
+                                <p class="text-muted mb-2">
+                                    <i class="fas fa-building me-2"></i>{{ member.department }}
+                                </p>
+                            {% endif %}
+                            {% if member.office_location %}
+                                <p class="text-muted mb-2">
+                                    <i class="fas fa-map-marker-alt me-2"></i>{{ member.office_location }}
+                                </p>
+                            {% endif %}
+                            {% if member.phone_extension %}
+                                <p class="text-muted mb-2">
+                                    <i class="fas fa-phone me-2"></i>Ext: {{ member.phone_extension }}
+                                </p>
+                            {% endif %}
+                            {% if member.email %}
+                                <p class="text-muted mb-0">
+                                    <i class="fas fa-envelope me-2"></i>{{ member.email }}
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Member Details -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-0">
+                    <h5 class="fw-bold text-dark mb-0">Member Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% if member.employee_id %}
+                        <div class="col-md-6 mb-3">
+                            <strong>Employee ID:</strong>
+                            <p class="text-muted mb-0">{{ member.employee_id }}</p>
+                        </div>
+                        {% endif %}
+                        {% if member.hire_date %}
+                        <div class="col-md-6 mb-3">
+                            <strong>Hire Date:</strong>
+                            <p class="text-muted mb-0">{{ member.hire_date|date:"F j, Y" }}</p>
+                        </div>
+                        {% endif %}
+                        {% if member.user.profile.bio %}
+                        <div class="col-12 mb-3">
+                            <strong>Bio:</strong>
+                            <p class="text-muted mb-0">{{ member.user.profile.bio }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Posts -->
+            {% if recent_posts %}
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <h5 class="fw-bold text-dark mb-0">Recent Posts</h5>
+                </div>
+                <div class="card-body">
+                    {% for post in recent_posts %}
+                    <div class="d-flex align-items-start mb-3">
+                        <div class="flex-shrink-0 me-3">
+                            {% if post.image %}
+                                <img src="{{ post.image.url }}" alt="Post" class="rounded" style="width: 50px; height: 50px; object-fit: cover;">
+                            {% else %}
+                                <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                    <i class="fas fa-file-text text-muted"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="flex-grow-1">
+                            <p class="mb-1 small text-muted">{{ post.content|truncatewords:15 }}</p>
+                            <small class="text-muted">{{ post.created_at|timesince }} ago</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Action Sidebar -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    {% if user.is_authenticated and member.user != user %}
+                        {% if friend_status == 'not_friends' %}
+                            <button class="btn btn-primary w-100 mb-3 add-friend-btn" 
+                                    data-user-id="{{ member.user.id }}">
+                                <i class="fas fa-user-plus me-2"></i>Add Friend
+                            </button>
+                        {% elif friend_status == 'request_sent' %}
+                            <button class="btn btn-warning w-100 mb-3" disabled>
+                                <i class="fas fa-clock me-2"></i>Request Sent
+                            </button>
+                        {% elif friend_status == 'request_received' %}
+                            <div class="mb-3">
+                                <p class="text-success mb-2">
+                                    <i class="fas fa-user-check me-1"></i>Friend Request Received
+                                </p>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-success btn-sm respond-friend-btn" 
+                                            data-request-id="{{ member.user.friend_requests_received.first.id }}" 
+                                            data-action="accept">
+                                        <i class="fas fa-check me-1"></i>Accept
+                                    </button>
+                                    <button class="btn btn-outline-danger btn-sm respond-friend-btn" 
+                                            data-request-id="{{ member.user.friend_requests_received.first.id }}" 
+                                            data-action="decline">
+                                        <i class="fas fa-times me-1"></i>Decline
+                                    </button>
+                                </div>
+                            </div>
+                        {% elif friend_status == 'friends' %}
+                            <button class="btn btn-success w-100 mb-3" disabled>
+                                <i class="fas fa-user-check me-2"></i>Friends
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm remove-friend-btn" 
+                                    data-user-id="{{ member.user.id }}">
+                                <i class="fas fa-user-times me-1"></i>Remove Friend
+                            </button>
+                        {% endif %}
+                    {% endif %}
+
+                    <div class="mt-4">
+                        <a href="{% url 'directory:directory' %}" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Directory
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.member-detail-avatar {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Friend request functionality
+    const addFriendBtn = document.querySelector('.add-friend-btn');
+    if (addFriendBtn) {
+        addFriendBtn.addEventListener('click', function() {
+            const userId = this.dataset.userId;
+            // You can implement a modal or direct request here
+            // For now, we'll use a simple approach
+            if (confirm('Send friend request to {{ member.full_name }}?')) {
+                sendFriendRequest(userId);
+            }
+        });
+    }
+
+    // Respond to friend requests
+    const respondBtns = document.querySelectorAll('.respond-friend-btn');
+    respondBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const requestId = this.dataset.requestId;
+            const action = this.dataset.action;
+            respondToFriendRequest(requestId, action);
+        });
+    });
+
+    // Remove friend
+    const removeFriendBtn = document.querySelector('.remove-friend-btn');
+    if (removeFriendBtn) {
+        removeFriendBtn.addEventListener('click', function() {
+            const userId = this.dataset.userId;
+            if (confirm('Remove {{ member.full_name }} from your friends?')) {
+                removeFriend(userId);
+            }
+        });
+    }
+
+    function sendFriendRequest(userId) {
+        fetch(`/directory/send-friend-request/${userId}/`, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showAlert(data.message, 'success');
+                location.reload();
+            } else {
+                showAlert(data.message, 'danger');
+            }
+        });
+    }
+
+    function respondToFriendRequest(requestId, action) {
+        fetch(`/directory/respond-friend-request/${requestId}/${action}/`, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showAlert(data.message, 'success');
+                location.reload();
+            } else {
+                showAlert(data.message, 'danger');
+            }
+        });
+    }
+
+    function removeFriend(userId) {
+        fetch(`/directory/remove-friend/${userId}/`, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showAlert(data.message, 'success');
+                location.reload();
+            } else {
+                showAlert(data.message, 'danger');
+            }
+        });
+    }
+
+    function showAlert(message, type) {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+        alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alertDiv);
+        
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.parentNode.removeChild(alertDiv);
+            }
+        }, 5000);
+    }
+});
+</script>
+{% endblock %}

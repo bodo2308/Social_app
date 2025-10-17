@@ -4,5 +4,72 @@
 {% block title %}Register - Company Connect{% endblock %}
 
 {% block content %}
-Register page !
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm auth-card">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-user-plus fa-3x text-primary mb-3"></i>
+                        <h2 class="fw-bold text-dark">Join Company Connect</h2>
+                        <p class="text-muted">Create your account to get started</p>
+                    </div>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control" id="id_username" required>
+                            {% if form.username.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.username.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_password1" class="form-label">Password</label>
+                            <input type="password" name="password1" class="form-control" id="id_password1" required>
+                            {% if form.password1.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.password1.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-4">
+                            <label for="id_password2" class="form-label">Confirm Password</label>
+                            <input type="password" name="password2" class="form-control" id="id_password2" required>
+                            {% if form.password2.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.password2.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 mb-3">Create Account</button>
+                    </form>
+
+                    <div class="text-center">
+                        <p class="text-muted">Already have an account? 
+                            <a href="{% url 'main:login' %}" class="text-primary text-decoration-none">Sign in here</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

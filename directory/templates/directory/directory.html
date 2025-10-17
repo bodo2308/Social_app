@@ -1,29 +1,242 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load directory_extras %}
 
 {% block title %}Directory - Company Connect{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
+    <!-- Header Section -->
     <div class="row mb-4">
         <div class="col-12">
-            <h1 class="display-5 fw-bold text-dark mb-2">
-                <i class="fas fa-users me-2"></i>Member Directory
-            </h1>
-            <p class="text-muted fs-5">Discover and connect with your colleagues across the company</p>
-        </div>
-    </div>
-    
-    <div class="row">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center py-5">
-                    <i class="fas fa-users fa-3x text-muted mb-3"></i>
-                    <h4 class="text-muted">Directory Coming Soon</h4>
-                    <p class="text-muted">The member directory feature is under development.</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="fw-bold text-dark mb-1">Member Directory</h2>
+                    <p class="text-muted mb-0">Connect with your colleagues and build your professional network</p>
+                </div>
+                <div class="d-flex gap-2">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'directory:my_friends' %}" class="btn btn-primary">
+                            <i class="fas fa-users me-1"></i>My Friends
+                        </a>
+                    {% else %}
+                        <a href="{% url 'main:login' %}" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt me-1"></i>Sign In to Connect
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Simple Search Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <form method="get" class="d-flex gap-3">
+                        <div class="flex-grow-1">
+                            <input type="text" name="search" class="form-control" 
+                                   placeholder="Search by name or username..." 
+                                   value="{{ search_query }}">
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search me-1"></i>Search
+                        </button>
+                        {% if search_query %}
+                        <a href="{% url 'directory:directory' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-1"></i>Clear
+                        </a>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Members Grid -->
+    <div class="row">
+        {% for member in members %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card border-0 shadow-sm h-100 member-card">
+                <div class="card-body text-center">
+                    <!-- Profile Picture -->
+                    <div class="mb-3">
+                        {% if member.profile_picture_url %}
+                            <img src="{{ member.profile_picture_url }}" alt="Profile" 
+                                 class="rounded-circle member-avatar">
+                        {% else %}
+                            <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center member-avatar mx-auto">
+                                <span class="text-white fw-bold fs-4">
+                                    {% if member.user.first_name and member.user.last_name %}
+                                        {{ member.user.first_name|first }}{{ member.user.last_name|first }}
+                                    {% else %}
+                                        {{ member.user.username|slice:":2"|upper }}
+                                    {% endif %}
+                                </span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Member Info -->
+                    <h5 class="fw-bold text-dark mb-1">{{ member.full_name }}</h5>
+                    <p class="text-muted small mb-1">@{{ member.user.username }}</p>
+                    {% if member.position %}
+                        <p class="text-muted mb-1">{{ member.position }}</p>
+                    {% endif %}
+                    {% if member.department %}
+                        <p class="text-muted small mb-2">{{ member.department }}</p>
+                    {% endif %}
+                    {% if member.office_location %}
+                        <p class="text-muted small mb-3">
+                            <i class="fas fa-map-marker-alt me-1"></i>{{ member.office_location }}
+                        </p>
+                    {% endif %}
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex justify-content-center gap-2">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'directory:member_detail' member.user.id %}" 
+                               class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-eye me-1"></i>View Profile
+                            </a>
+                        {% else %}
+                            <a href="{% url 'main:login' %}" 
+                               class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-eye me-1"></i>View Profile
+                            </a>
+                        {% endif %}
+                        
+                        {% if user.is_authenticated and member.user != user %}
+                            {% if friend_status|lookup:member.user.id == 'not_friends' %}
+                                <button class="btn btn-primary btn-sm add-friend-btn" 
+                                        data-user-id="{{ member.user.id }}">
+                                    <i class="fas fa-user-plus me-1"></i>Add Friend
+                                </button>
+                            {% elif friend_status|lookup:member.user.id == 'request_sent' %}
+                                <button class="btn btn-warning btn-sm" disabled>
+                                    <i class="fas fa-clock me-1"></i>Request Sent
+                                </button>
+                            {% elif friend_status|lookup:member.user.id == 'request_received' %}
+                                <button class="btn btn-success btn-sm" disabled>
+                                    <i class="fas fa-user-check me-1"></i>Request Received
+                                </button>
+                            {% elif friend_status|lookup:member.user.id == 'friends' %}
+                                <button class="btn btn-success btn-sm" disabled>
+                                    <i class="fas fa-user-check me-1"></i>Friends
+                                </button>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No members found</h5>
+                    <p class="text-muted">Try adjusting your search criteria or check back later.</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
+
+
+<style>
+.member-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.member-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
+}
+
+.member-avatar {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+.add-friend-btn {
+    transition: all 0.2s ease;
+}
+
+.add-friend-btn:hover {
+    transform: translateY(-1px);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const addFriendBtns = document.querySelectorAll('.add-friend-btn');
+
+    addFriendBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const userId = this.dataset.userId;
+            sendFriendRequest(userId, this);
+        });
+    });
+
+    function sendFriendRequest(userId, buttonElement) {
+        const formData = new FormData();
+        formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        
+        fetch(`/directory/send-friend-request/${userId}/`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show success message
+                showAlert(data.message, 'success');
+                
+                // Update button
+                if (data.action === 'sent') {
+                    buttonElement.innerHTML = '<i class="fas fa-clock me-1"></i>Request Sent';
+                    buttonElement.classList.remove('btn-primary', 'add-friend-btn');
+                    buttonElement.classList.add('btn-warning');
+                    buttonElement.disabled = true;
+                } else if (data.action === 'accepted') {
+                    buttonElement.innerHTML = '<i class="fas fa-user-check me-1"></i>Friends';
+                    buttonElement.classList.remove('btn-primary', 'add-friend-btn');
+                    buttonElement.classList.add('btn-success');
+                    buttonElement.disabled = true;
+                }
+            } else {
+                showAlert(data.message, 'danger');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showAlert('An error occurred. Please try again.', 'danger');
+        });
+    }
+
+    function showAlert(message, type) {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+        alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alertDiv);
+        
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.parentNode.removeChild(alertDiv);
+            }
+        }, 5000);
+    }
+});
+</script>
 {% endblock %}

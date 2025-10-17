@@ -5,4 +5,5 @@ app_name = 'accounts'
 
 urlpatterns = [
     path('friends/', views.friends, name='friends'),
+    path('profile/', views.profile, name='profile'),
 ]
