@@ -52,18 +52,30 @@
                 <div class="card-body p-4">
                     {% if messages %}
                         {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                            </div>
+                            {% if message.tags == 'error' %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% elif message.tags == 'success' %}
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endif %}
                         {% endfor %}
                     {% endif %}
 
                     <form method="post" enctype="multipart/form-data" id="profileForm">
                         {% csrf_token %}
                         
-                        <!-- Hidden profile picture input -->
-                        <div class="d-none">
+                        <!-- Profile picture input (hidden but accessible) -->
+                        <div style="display: none;">
                             {{ profile_form.profile_picture }}
                         </div>
                         
@@ -98,10 +110,24 @@
                             <div class="col-md-6 mb-3">
                                 <label for="id_first_name" class="form-label fw-medium">First Name</label>
                                 {{ user_form.first_name }}
+                                {% if user_form.first_name.errors %}
+                                    <div class="text-danger small">
+                                        {% for error in user_form.first_name.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="id_last_name" class="form-label fw-medium">Last Name</label>
                                 {{ user_form.last_name }}
+                                {% if user_form.last_name.errors %}
+                                    <div class="text-danger small">
+                                        {% for error in user_form.last_name.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
 
@@ -202,27 +228,66 @@
 document.addEventListener('DOMContentLoaded', function() {
     const profileImageInput = document.getElementById('id_profile_picture');
     const profileImagePreview = document.getElementById('profileImagePreview');
+    const profileForm = document.getElementById('profileForm');
     
-    profileImageInput.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                if (profileImagePreview.tagName === 'IMG') {
-                    profileImagePreview.src = e.target.result;
-                } else {
-                    // Replace the div with an img
-                    const newImg = document.createElement('img');
-                    newImg.src = e.target.result;
-                    newImg.className = 'rounded-circle profile-main-image';
-                    newImg.alt = 'Profile Picture';
-                    newImg.id = 'profileImagePreview';
-                    profileImagePreview.parentNode.replaceChild(newImg, profileImagePreview);
+    // Handle profile image preview
+    if (profileImageInput) {
+        profileImageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Validate file type
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select an image file.');
+                    return;
                 }
-            };
-            reader.readAsDataURL(file);
-        }
-    });
+                
+                // Validate file size (5MB max)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Image file too large. Please select a file smaller than 5MB.');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    if (profileImagePreview.tagName === 'IMG') {
+                        profileImagePreview.src = e.target.result;
+                    } else {
+                        // Replace the div with an img
+                        const newImg = document.createElement('img');
+                        newImg.src = e.target.result;
+                        newImg.className = 'rounded-circle profile-main-image';
+                        newImg.alt = 'Profile Picture';
+                        newImg.id = 'profileImagePreview';
+                        profileImagePreview.parentNode.replaceChild(newImg, profileImagePreview);
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+    
+    // Handle form submission
+    if (profileForm) {
+        profileForm.addEventListener('submit', function(e) {
+            console.log('Form submission started');
+            
+            // Validate required fields
+            const firstName = document.getElementById('id_first_name');
+            const lastName = document.getElementById('id_last_name');
+            
+            if (firstName && lastName) {
+                console.log('First name:', firstName.value);
+                console.log('Last name:', lastName.value);
+            }
+            
+            // Show loading state
+            const submitBtn = profileForm.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Updating...';
+            }
+        });
+    }
 });
 </script>
 {% endblock %}

@@ -91,6 +91,19 @@ class ProfileUpdateForm(forms.ModelForm):
                     raise forms.ValidationError("File must be an image")
             # If it's an existing ImageFieldFile, just return it as-is
         return picture
+    
+    def clean_employee_id(self):
+        employee_id = self.cleaned_data.get('employee_id')
+        if employee_id:
+            # Check if employee_id is unique (excluding current instance)
+            if self.instance and self.instance.pk:
+                existing = Profile.objects.filter(employee_id=employee_id).exclude(pk=self.instance.pk)
+            else:
+                existing = Profile.objects.filter(employee_id=employee_id)
+            
+            if existing.exists():
+                raise forms.ValidationError("Employee ID already exists")
+        return employee_id
 
 class PostForm(forms.ModelForm):
     class Meta:
